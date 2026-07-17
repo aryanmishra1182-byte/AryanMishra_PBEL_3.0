@@ -6,6 +6,10 @@
 ![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-orange)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
+## 🌐 Live Demo
+
+**Live Demo:** https://aryanmishra-pbel-3-0-1.onrender.com/
+
 ## 📌 Overview
 
 The **AI-Driven Student Performance Prediction System** is a Machine Learning web application that predicts a student's expected exam score based on academic, family, school, and lifestyle factors.
