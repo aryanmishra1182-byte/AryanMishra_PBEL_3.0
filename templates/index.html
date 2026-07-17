@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Student Performance Prediction</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header class="hero">
+
+<div>
+
+<h1>🎓 AI Student Performance Prediction</h1>
+
+<p>
+
+Predict a student's exam performance using Machine Learning.
+
+</p>
+
+</div>
+
+</header>
+
+<div class="main-grid">
+
+<!-- ===================== -->
+<!-- LEFT PANEL -->
+<!-- ===================== -->
+
+<div class="form-card">
+
+<form action="/predict" method="POST">
+
+<h2>📚 Academic Information</h2>
+
+<div class="input-group">
+
+<label>Hours Studied (0–12 hrs/day)</label>
+
+<input
+type="number"
+name="Hours_Studied"
+min="0"
+max="12"
+step="0.5"
+required>
+
+</div>
+
+<div class="input-group">
+
+<label>Attendance (%)</label>
+
+<input
+type="number"
+name="Attendance"
+min="0"
+max="100"
+step="0.1"
+required>
+
+</div>
+
+<div class="input-group">
+
+<label>Previous Score (0–100)</label>
+
+<input
+type="number"
+name="Previous_Scores"
+min="0"
+max="100"
+step="0.1"
+required>
+
+</div>
+
+<div class="input-group">
+
+<label>Sleep Hours</label>
+
+<input
+type="number"
+name="Sleep_Hours"
+min="0"
+max="15"
+step="0.5"
+required>
+
+</div>
+
+<div class="input-group">
+
+<label>Tutoring Sessions</label>
+
+<input
+type="number"
+name="Tutoring_Sessions"
+min="0"
+step="1"
+required>
+
+</div>
+
+<div class="input-group">
+
+<label>Physical Activity (hrs/week)</label>
+
+<input
+type="number"
+name="Physical_Activity"
+min="0"
+step="0.5"
+required>
+
+</div>
+
+<h2>🏫 School Information</h2>
+
+<div class="input-group">
+
+<label>Teacher Quality</label>
+
+<select name="Teacher_Quality" required>
+
+<option value="">Select</option>
+
+<option>Low</option>
+<option>Medium</option>
+<option>High</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>School Type</label>
+
+<select name="School_Type" required>
+
+<option value="">Select</option>
+
+<option>Public</option>
+
+<option>Private</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>Access to Resources</label>
+
+<select name="Access_to_Resources" required>
+
+<option value="">Select</option>
+
+<option>Low</option>
+
+<option>Medium</option>
+
+<option>High</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>Motivation Level</label>
+
+<select name="Motivation_Level" required>
+
+<option value="">Select</option>
+
+<option>Low</option>
+
+<option>Medium</option>
+
+<option>High</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>Peer Influence</label>
+
+<select name="Peer_Influence" required>
+
+<option value="">Select</option>
+
+<option>Positive</option>
+
+<option>Neutral</option>
+
+<option>Negative</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>Internet Access</label>
+
+<select name="Internet_Access" required>
+
+<option value="">Select</option>
+
+<option>Yes</option>
+
+<option>No</option>
+
+</select>
+
+</div>
+
+<h2>👨‍👩‍👧 Family Information</h2>
+
+<div class="input-group">
+
+<label>Parental Involvement</label>
+
+<select name="Parental_Involvement" required>
+
+<option value="">Select</option>
+
+<option>Low</option>
+
+<option>Medium</option>
+
+<option>High</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>Family Income</label>
+
+<select name="Family_Income" required>
+
+<option value="">Select</option>
+
+<option>Low</option>
+
+<option>Medium</option>
+
+<option>High</option>
+
+</select>
+
+</div>
+<div class="input-group">
+
+<label>Parental Education</label>
+
+<select name="Parental_Education_Level" required>
+
+<option value="">Select</option>
+
+<option>High School</option>
+
+<option>College</option>
+
+<option>Postgraduate</option>
+
+</select>
+
+</div>
+
+<h2>❤️ Lifestyle</h2>
+
+<div class="input-group">
+
+<label>Extracurricular Activities</label>
+
+<select name="Extracurricular_Activities" required>
+
+<option value="">Select</option>
+
+<option>Yes</option>
+
+<option>No</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>Learning Disabilities</label>
+
+<select name="Learning_Disabilities" required>
+
+<option value="">Select</option>
+
+<option>Yes</option>
+
+<option>No</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>Distance From Home</label>
+
+<select name="Distance_from_Home" required>
+
+<option value="">Select</option>
+
+<option>Near</option>
+
+<option>Moderate</option>
+
+<option>Far</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>Gender</label>
+
+<select name="Gender" required>
+
+<option value="">Select</option>
+
+<option>Male</option>
+
+<option>Female</option>
+
+</select>
+
+</div>
+
+<button class="predict-btn" type="submit">
+
+🚀 Predict Student Performance
+
+</button>
+
+</form>
+
+</div>
+
+<!-- ========================= -->
+<!-- RIGHT PANEL -->
+<!-- ========================= -->
+
+<div class="result-card">
+
+{% if prediction %}
+
+<div class="result-header">
+
+<div class="score-circle">
+
+<h1>{{ prediction }}</h1>
+
+<span>/100</span>
+
+</div>
+
+<div>
+
+<h2>{{ emoji }} {{ category }}</h2>
+
+<p class="risk">
+Risk Level
+<span class="{{ risk|lower }}">{{ risk }}</span>
+</p>
+
+</div>
+
+</div>
+
+<div class="recommendations">
+
+<h3>🤖 AI Recommendations</h3>
+
+<ul>
+
+{% for item in suggestions %}
+
+<li>{{ item }}</li>
+
+{% endfor %}
+
+</ul>
+
+</div>
+
+{% else %}
+
+<div class="welcome">
+
+<div class="welcome-icon">
+
+🎓
+
+</div>
+
+<h2>Prediction Dashboard</h2>
+
+<p>
+
+Fill in the student details and click
+
+<b>Predict Student Performance</b>
+
+to generate an AI prediction.
+
+</p>
+
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+<!-- ========================= -->
+<!-- ANALYTICS -->
+<!-- ========================= -->
+
+<section class="analytics">
+
+<h2>📊 Model Analytics</h2>
+
+<div class="graph-grid">
+
+<div class="graph-card">
+
+<h3>Feature Importance</h3>
+
+<img src="{{ url_for('static',filename='feature_importance.png') }}">
+
+</div>
+
+<div class="graph-card">
+
+<h3>Actual vs Predicted</h3>
+
+<img src="{{ url_for('static',filename='actual_vs_predicted.png') }}">
+
+</div>
+
+<div class="graph-card">
+
+<h3>Correlation Heatmap</h3>
+
+<img src="{{ url_for('static',filename='correlation_heatmap.png') }}">
+
+</div>
+
+<div class="graph-card">
+
+<h3>Score Distribution</h3>
+
+<img src="{{ url_for('static',filename='target_distribution.png') }}">
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+
+<p>
+
+AI Driven Student Performance Prediction System
+
+</p>
+
+<span>
+
+Built using Flask • Python • Scikit-learn • Machine Learning
+
+</span>
+
+</footer>
+
+</div>
+
+</body>
+
+</html>
