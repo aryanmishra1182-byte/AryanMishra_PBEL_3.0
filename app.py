@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import pandas as pd
 import joblib
 
@@ -149,6 +149,75 @@ def not_found(e):
 def internal(e):
     return render_template("index.html"), 500
 
+@app.route("/api/predict", methods=["POST"])
+def api_predict():
 
+    data = request.get_json()
+
+    df = pd.DataFrame([data])
+
+    for col, encoder in encoders.items():
+        df[col] = encoder.transform(df[col].astype(str))
+
+    df = df[features]
+
+    prediction = float(model.predict(df)[0])
+    prediction = max(0, min(100, round(prediction, 2)))
+
+    if prediction >= 85:
+        performance = "🌟 Outstanding Performance"
+        risk = "Very Low"
+        color = "#22c55e"
+        recommendations = [
+            "Maintain your excellent consistency.",
+            "Participate in coding contests & hackathons.",
+            "Keep solving advanced problems.",
+            "Continue balancing academics and health.",
+            "Help classmates through peer learning."
+        ]
+
+    elif prediction >= 70:
+        performance = "✅ Good Performance"
+        risk = "Low"
+        color = "#38bdf8"
+        recommendations = [
+            "Practice weak subjects regularly.",
+            "Increase revision frequency.",
+            "Maintain attendance above 90%.",
+            "Solve previous year papers.",
+            "Continue your current routine."
+        ]
+
+    elif prediction >= 50:
+        performance = "⚠ Average Performance"
+        risk = "Medium"
+        color = "#f59e0b"
+        recommendations = [
+            "Increase daily study hours.",
+            "Reduce distractions.",
+            "Take help from teachers.",
+            "Prepare weekly goals.",
+            "Improve attendance."
+        ]
+
+    else:
+        performance = "❌ Needs Improvement"
+        risk = "High"
+        color = "#ef4444"
+        recommendations = [
+            "Follow a strict timetable.",
+            "Study every day.",
+            "Revise basic concepts.",
+            "Seek mentorship.",
+            "Avoid procrastination."
+        ]
+
+    return jsonify({
+        "prediction": prediction,
+        "performance": performance,
+        "risk": risk,
+        "color": color,
+        "recommendations": recommendations
+    })
 if __name__ == "__main__":
     app.run(debug=True)

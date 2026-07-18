@@ -90,18 +90,100 @@ document.addEventListener("DOMContentLoaded", () => {
        LOADER
     ========================== */
 
-    const form = document.querySelector("form");
-    const loader = document.getElementById("loader");
+    const form = document.getElementById("predictionForm");
+const loader = document.getElementById("loader");
 
-    if (form && loader) {
+if (form) {
 
-        form.addEventListener("submit", () => {
+    form.addEventListener("submit", async (e) => {
 
-            loader.style.display = "flex";
+        e.preventDefault();
+
+        loader.style.display = "flex";
+
+        const formData = new FormData(form);
+
+        const data = {};
+
+        formData.forEach((value, key) => {
+
+            data[key] = value;
 
         });
 
-    }
+        try {
+
+            const response = await fetch(
+                "https://aryanmishra-pbel-3-0-1.onrender.com/api/predict",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                }
+            );
+
+            const result = await response.json();
+
+            loader.style.display = "none";
+
+            document.getElementById("analytics").style.display = "block";
+
+            document.getElementById("predictionScore").innerHTML =
+                result.prediction + "%";
+
+            document.getElementById("performanceText").innerHTML =
+                result.performance;
+
+            document.getElementById("riskText").innerHTML =
+                result.risk;
+
+            const list =
+                document.getElementById("recommendationList");
+
+            list.innerHTML = "";
+
+            result.recommendations.forEach((item) => {
+
+                list.innerHTML += `<li>${item}</li>`;
+
+            });
+
+            const circle =
+                document.getElementById("progressCircle");
+
+            circle.style.setProperty(
+                "--percent",
+                result.prediction
+            );
+
+            circle.style.stroke =
+                result.color;
+
+            circle.style.strokeDashoffset =
+                565 - (565 * result.prediction) / 100;
+
+            document
+                .getElementById("analytics")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        }
+        catch (err) {
+
+            loader.style.display = "none";
+
+            alert("Prediction failed. Please try again.");
+
+            console.error(err);
+
+        }
+
+    });
+
+}
 
     /* ==========================
        COUNT UP ANIMATION
