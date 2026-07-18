@@ -1,92 +1,154 @@
-# 🎓 AI-Driven Student Performance Prediction System
+# 🎓 EduPredict AI – Student Performance Prediction System
 
-![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Flask](https://img.shields.io/badge/Flask-Web_App-black)
-![Machine Learning](https://img.shields.io/badge/Machine-Learning-success)
-![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-orange)
-![License](https://img.shields.io/badge/License-MIT-green)
-
-## 🌐 Live Demo
-
-**Live Demo:** https://aryanmishra-pbel-3-0-1.onrender.com/
-
-## 📌 Overview
-
-The **AI-Driven Student Performance Prediction System** is a Machine Learning web application that predicts a student's expected exam score based on academic, family, school, and lifestyle factors.
-
-The project uses supervised machine learning to analyze various attributes affecting student performance and provides:
-
-- 📊 Predicted Exam Score
-- 🏆 Performance Category
-- ⚠️ Risk Level
-- 🤖 AI-based Personalized Recommendations
-- 📈 Visual Analytics
+An end-to-end Machine Learning web application that predicts a student's academic performance based on study habits, attendance, and lifestyle factors.
 
 ---
 
-## 🚀 Features
+## 🚀 Live Demo
 
-- 🎯 Predict student exam score
-- 📚 Intelligent recommendations based on input
-- 📊 Feature Importance Visualization
-- 🔥 Correlation Heatmap
-- 📈 Actual vs Predicted Graph
-- 📉 Target Score Distribution
-- 🌐 Responsive Flask Web Application
-- 💎 Modern Dashboard UI
+### 🌐 Frontend
+https://stunning-starlight-6d53bb.netlify.app/
+
+### 🤖 Backend API
+https://aryanmishra-pbel-3-0-1.onrender.com
 
 ---
 
-## 🛠️ Tech Stack
+# 📌 Project Overview
 
-### Frontend
+EduPredict AI is a Machine Learning-powered web application that predicts a student's academic performance using educational and lifestyle parameters.
+
+The application combines a trained Machine Learning model with a Flask REST API and a modern responsive frontend to provide instant predictions along with personalized recommendations.
+
+---
+
+# ✨ Features
+
+- 🎯 AI-based Student Performance Prediction
+- 📊 Interactive Prediction Form
+- ⚡ Real-time Prediction
+- 📈 Performance Score Visualization
+- 💡 Personalized Recommendations
+- 📱 Responsive UI
+- 🔗 REST API Support
+- ☁️ Cloud Deployment
+- 🤖 Machine Learning Integration
+
+---
+
+# 🛠 Tech Stack
+
+## Frontend
 - HTML5
 - CSS3
+- JavaScript
+- Bootstrap
 
-### Backend
-- Flask
+## Backend
 - Python
+- Flask
+- Flask-CORS
 
-### Machine Learning
+## Machine Learning
 - Scikit-Learn
 - Pandas
 - NumPy
 - Joblib
 
-### Visualization
-- Matplotlib
-- Seaborn
+## Deployment
+- Netlify
+- Render
+
+---
+
+# 🧠 Machine Learning Workflow
+
+```
+Dataset
+   │
+   ▼
+Data Cleaning
+   │
+   ▼
+Feature Engineering
+   │
+   ▼
+Categorical Encoding
+   │
+   ▼
+Model Training
+   │
+   ▼
+Model Evaluation
+   │
+   ▼
+Model Serialization (.pkl)
+   │
+   ▼
+Flask API
+   │
+   ▼
+Netlify Frontend
+```
 
 ---
 
 # 📂 Project Structure
 
-```text
-AI-Student-Performance-Prediction/
+```
+EduPredict-AI
 │
 ├── app.py
-├── train_model.py
 ├── requirements.txt
-├── README.md
-├── Procfile
-│
-├── data/
-│   └── StudentPerformanceFactors.csv
-│
 ├── models/
 │   ├── model.pkl
 │   ├── encoders.pkl
 │   └── features.pkl
 │
+├── templates/
+│   └── index.html
+│
 ├── static/
 │   ├── style.css
-│   ├── feature_importance.png
-│   ├── actual_vs_predicted.png
-│   ├── correlation_heatmap.png
-│   └── target_distribution.png
+│   └── script.js
 │
-└── templates/
-    └── index.html
+├── frontend/
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
+│
+└── README.md
+```
+
+---
+
+# 🔗 API Endpoint
+
+### POST Request
+
+```
+POST /api/predict
+```
+
+### Sample Request
+
+```json
+{
+  "attendance": 85,
+  "study_hours": 5,
+  "sleep_hours": 7,
+  "previous_grade": 82
+}
+```
+
+### Sample Response
+
+```json
+{
+  "prediction": "Excellent",
+  "score": 91.42,
+  "recommendation": "Maintain your current study routine."
+}
 ```
 
 ---
@@ -96,13 +158,13 @@ AI-Student-Performance-Prediction/
 Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/AI-Student-Performance-Prediction.git
+git clone https://github.com/aryanmishra1182-byte/AryanMishra_PBEL_3.0.git
 ```
 
-Go to the project folder
+Move into the project directory
 
 ```bash
-cd AI-Student-Performance-Prediction
+cd AryanMishra_PBEL_3.0
 ```
 
 Install dependencies
@@ -117,87 +179,39 @@ Run the application
 python app.py
 ```
 
-Open your browser
+---
 
-```
-http://127.0.0.1:5000
-```
+# 🌍 Deployment
+
+### Frontend
+Netlify
+
+### Backend
+Render
 
 ---
 
-# 📊 Machine Learning Workflow
+# 🚀 Future Improvements
 
-- Data Collection
-- Data Cleaning
-- Missing Value Handling
-- Label Encoding
-- Feature Selection
-- Train-Test Split
-- Model Training
-- Model Evaluation
-- Prediction
-- Deployment using Flask
-
----
-
-# 📷 Application Preview
-
-## Home Page
-
-> Add a screenshot here
-
-```
-images/home.png
-```
-
-## Prediction Dashboard
-
-> Add a screenshot here
-
-```
-images/dashboard.png
-```
-
----
-
-# 📈 Visualizations
-
-The application automatically generates:
-
-- Feature Importance
-- Correlation Heatmap
-- Actual vs Predicted Graph
-- Target Distribution
-
----
-
-# 🤖 AI Recommendations
-
-The system provides personalized recommendations such as:
-
-- Increase attendance
-- Improve study hours
-- Maintain healthy sleep schedule
-- Attend tutoring sessions
-- Improve physical activity
-
----
-
-# 📌 Future Improvements
-
-- User Login System
-- Student History
+- User Authentication
+- Prediction History
+- Student Dashboard
+- Data Analytics
+- Charts & Graphs
 - PDF Report Generation
-- Email Prediction Report
-- Deep Learning Model
-- Live Database Integration
-- Cloud Deployment
+- Explainable AI (SHAP)
+- Database Integration
 
 ---
 
-# 📄 License
+# 📸 Screenshots
 
-This project is developed for educational purposes.
+> Add screenshots of your application here.
+
+- Home Page
+- Prediction Form
+- Prediction Result
+- Recommendation Section
 
 ---
 
@@ -205,14 +219,22 @@ This project is developed for educational purposes.
 
 **Aryan Mishra**
 
-B.Tech CSE (Data Science)
-
+B.Tech CSE (Data Science)  
 ABES Engineering College
 
-GitHub: https://github.com/YOUR_USERNAME
-
-LinkedIn: https://linkedin.com/in/YOUR_LINKEDIN
+GitHub:
+https://github.com/aryanmishra1182-byte
 
 ---
 
-⭐ If you found this project useful, consider giving it a star on GitHub.
+# ⭐ Support
+
+If you found this project helpful, please ⭐ star this repository.
+
+It motivates me to build more Machine Learning and AI projects.
+
+---
+
+## 📄 License
+
+This project is developed for educational purposes and learning Machine Learning deployment using Flask, Render, and Netlify.
