@@ -1,209 +1,154 @@
 from flask import Flask, render_template, request
 import pandas as pd
 import joblib
-import traceback
-
-# ----------------------------------------------------
-# LOAD APPLICATION
-# ----------------------------------------------------
 
 app = Flask(__name__)
 
-# ----------------------------------------------------
-# LOAD TRAINED FILES
-# ----------------------------------------------------
+# ==========================
+# LOAD FILES
+# ==========================
 
 model = joblib.load("models/model.pkl")
 encoders = joblib.load("models/encoders.pkl")
 features = joblib.load("models/features.pkl")
 
-# ----------------------------------------------------
-# HOME PAGE
-# ----------------------------------------------------
 
 @app.route("/")
 def home():
     return render_template("index.html")
 
-# ----------------------------------------------------
-# PREDICTION
-# ----------------------------------------------------
 
 @app.route("/predict", methods=["POST"])
 def predict():
 
-    try:
-
-        data = {}
-
-        # ---------------------------------------------
-        # READ ALL FEATURES
-        # ---------------------------------------------
-
-        for feature in features:
-
-            value = request.form.get(feature)
-
-            if feature in encoders:
-
-                value = encoders[feature].transform([value])[0]
-
-            else:
-
-                value = float(value)
-
-            data[feature] = value
-
-        input_df = pd.DataFrame([data])
-
-        prediction = round(model.predict(input_df)[0],2)
-
-        # ---------------------------------------------
-        # PERFORMANCE CATEGORY
-        # ---------------------------------------------
-
-        if prediction >= 90:
-
-            category = "Outstanding"
-
-            emoji = "🏆"
-
-            color = "#16a34a"
-
-        elif prediction >= 75:
-
-            category = "Excellent"
-
-            emoji = "⭐"
-
-            color = "#2563eb"
-
-        elif prediction >= 60:
-
-            category = "Good"
-
-            emoji = "👍"
-
-            color = "#f59e0b"
-
-        elif prediction >= 40:
-
-            category = "Average"
-
-            emoji = "📘"
-
-            color = "#fb923c"
-
-        else:
-
-            category = "Needs Improvement"
-
-            emoji = "⚠️"
-
-            color = "#dc2626"
-
-        # ---------------------------------------------
-        # RISK LEVEL
-        # ---------------------------------------------
-
-        if prediction >= 75:
-
-            risk = "LOW"
-
-        elif prediction >= 50:
-
-            risk = "MEDIUM"
-
-        else:
-
-            risk = "HIGH"
-
-        # ---------------------------------------------
-        # AI RECOMMENDATIONS
-        # ---------------------------------------------
-
-        suggestions = []
-
-        if data["Attendance"] < 75:
-            suggestions.append("Increase attendance above 75%.")
-
-        if data["Hours_Studied"] < 4:
-            suggestions.append("Study at least 4–6 hours daily.")
-
-        if data["Sleep_Hours"] < 7:
-            suggestions.append("Maintain 7–8 hours of sleep.")
-
-        if data["Tutoring_Sessions"] < 2:
-            suggestions.append("Attend additional tutoring sessions.")
-
-        if data["Previous_Scores"] < 70:
-            suggestions.append("Revise previous concepts regularly.")
-
-        if data["Physical_Activity"] < 1:
-            suggestions.append("Engage in regular physical activity.")
-
-        if len(suggestions) == 0:
-            suggestions.append("Excellent habits! Keep maintaining your performance.")
-
-        # ----------------------------------------------------
-        # RETURN RESULTS
-        # ----------------------------------------------------
-
-        return render_template(
-
-            "index.html",
-
-            prediction=prediction,
-
-            category=category,
-
-            emoji=emoji,
-
-            color=color,
-
-            risk=risk,
-
-            suggestions=suggestions,
-
-            feature_graph="feature_importance.png",
-
-            correlation_graph="correlation_heatmap.png",
-
-            distribution_graph="target_distribution.png",
-
-            prediction_graph="actual_vs_predicted.png"
-
-        )
-
-    # ----------------------------------------------------
-    # ERROR HANDLING
-    # ----------------------------------------------------
-
-    except Exception as e:
-
-        print(traceback.format_exc())
-
-        return render_template(
-
-            "index.html",
-
-            error=str(e)
-
-        )
-
-
-# ----------------------------------------------------
-# RUN APPLICATION
-# ----------------------------------------------------
-
-if __name__ == "__main__":
-
-    app.run(
-
-        debug=True,
-
-        host="0.0.0.0",
-
-        port=5000
+    data = {
+        "Hours_Studied": float(request.form["Hours_Studied"]),
+        "Attendance": float(request.form["Attendance"]),
+        "Parental_Involvement": request.form["Parental_Involvement"],
+        "Access_to_Resources": request.form["Access_to_Resources"],
+        "Extracurricular_Activities": request.form["Extracurricular_Activities"],
+        "Sleep_Hours": float(request.form["Sleep_Hours"]),
+        "Previous_Scores": float(request.form["Previous_Scores"]),
+        "Motivation_Level": request.form["Motivation_Level"],
+        "Internet_Access": request.form["Internet_Access"],
+        "Tutoring_Sessions": float(request.form["Tutoring_Sessions"]),
+        "Family_Income": request.form["Family_Income"],
+        "Teacher_Quality": request.form["Teacher_Quality"],
+        "School_Type": request.form["School_Type"],
+        "Peer_Influence": request.form["Peer_Influence"],
+        "Physical_Activity": float(request.form["Physical_Activity"]),
+        "Learning_Disabilities": request.form["Learning_Disabilities"],
+        "Parental_Education_Level": request.form["Parental_Education_Level"],
+        "Distance_from_Home": request.form["Distance_from_Home"],
+        "Gender": request.form["Gender"]
+    }
+
+    df = pd.DataFrame([data])
+
+    # ==========================
+    # LABEL ENCODING
+    # ==========================
+
+    for col, encoder in encoders.items():
+
+        df[col] = encoder.transform(df[col].astype(str))
+
+    # feature order same as training
+
+    df = df[features]
+
+    prediction = float(model.predict(df)[0])
+
+    prediction = round(prediction, 2)
+
+    if prediction < 0:
+        prediction = 0
+
+    if prediction > 100:
+        prediction = 100
+
+    # ==========================
+    # RESULT
+    # ==========================
+
+    if prediction >= 85:
+
+        performance = "🌟 Outstanding Performance"
+        risk = "Very Low"
+        color = "#22c55e"
+
+        recommendations = [
+            "Maintain your excellent consistency.",
+            "Participate in coding contests & hackathons.",
+            "Keep solving advanced problems.",
+            "Continue balancing academics and health.",
+            "Help classmates through peer learning."
+        ]
+
+    elif prediction >= 70:
+
+        performance = "✅ Good Performance"
+        risk = "Low"
+        color = "#38bdf8"
+
+        recommendations = [
+            "Practice weak subjects regularly.",
+            "Increase revision frequency.",
+            "Maintain attendance above 90%.",
+            "Solve previous year papers.",
+            "Continue your current routine."
+        ]
+
+    elif prediction >= 50:
+
+        performance = "⚠ Average Performance"
+        risk = "Medium"
+        color = "#f59e0b"
+
+        recommendations = [
+            "Increase daily study hours.",
+            "Reduce distractions.",
+            "Take help from teachers.",
+            "Prepare weekly goals.",
+            "Improve attendance."
+        ]
+
+    else:
+
+        performance = "❌ Needs Improvement"
+        risk = "High"
+        color = "#ef4444"
+
+        recommendations = [
+            "Follow a strict timetable.",
+            "Study every day.",
+            "Revise basic concepts.",
+            "Seek mentorship.",
+            "Avoid procrastination."
+        ]
+
+    return render_template(
+
+        "index.html",
+
+        prediction=prediction,
+        performance=performance,
+        risk=risk,
+        color=color,
+        recommendations=recommendations
 
     )
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("index.html"), 404
+
+
+@app.errorhandler(500)
+def internal(e):
+    return render_template("index.html"), 500
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
