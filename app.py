@@ -5,6 +5,10 @@ import joblib
 
 
 app = Flask(__name__)
+CORS(
+    app,
+    resources={r"/api/*": {"origins": "*"}}
+)
 
 # ==========================
 # LOAD FILES
